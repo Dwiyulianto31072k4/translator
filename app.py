@@ -1,5 +1,5 @@
 import streamlit as st
-from googletrans import Translator
+from deep_translator import GoogleTranslator
 import time
 
 # Konfigurasi halaman
@@ -10,7 +10,7 @@ st.set_page_config(
 )
 
 # Inisialisasi translator
-translator = Translator()
+translator = GoogleTranslator(source='en', target='id')
 
 # Header aplikasi
 st.title("🌐 English to Indonesian Translator")
@@ -40,14 +40,14 @@ if st.button("🔄 Translate", type="primary", use_container_width=True):
             # Menampilkan loading spinner
             with st.spinner("Translating..."):
                 # Melakukan penerjemahan
-                translation = translator.translate(english_text, src='en', dest='id')
+                translation_text = translator.translate(english_text)
                 time.sleep(0.5)  # Delay kecil untuk UX yang lebih baik
             
             # Menampilkan hasil terjemahan
             with col2:
                 translation_container.text_area(
                     "Hasil terjemahan:",
-                    value=translation.text,
+                    value=translation_text,
                     height=200,
                     disabled=True
                 )
@@ -57,7 +57,7 @@ if st.button("🔄 Translate", type="primary", use_container_width=True):
             
             # Ekspander untuk informasi detail
             with st.expander("📊 Translation Details"):
-                st.write(f"**Source Language:** {translation.src}")
+                st.write(f"**Source Language:** English")
                 st.write(f"**Destination Language:** Indonesian")
                 st.write(f"**Confidence:** High")
                 st.write(f"**Character Count:** {len(english_text)} characters")
